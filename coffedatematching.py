@@ -1,11 +1,12 @@
 from __future__ import generators
 import networkx as nx
-from names_generator import generate_name 
+from names_generator import generate_name
 import time
 
 if 'True' not in globals():
     globals()['True'] = not None
     globals()['False'] = not True
+
 
 class unionFind:
     '''Union Find data structure. Modified from Josiah Carlson's code,
@@ -26,14 +27,14 @@ Object must be hashable; previously unknown objects become new singleton sets.''
             self.parents[object] = object
             self.weights[object] = 1
             return object
-        
+
         # find path of objects leading to the root
         path = [object]
         root = self.parents[object]
         while root != path[-1]:
             path.append(root)
             root = self.parents[root]
-        
+
         # compress the path and return
         for ancestor in path:
             self.parents[ancestor] = root
@@ -42,13 +43,14 @@ Object must be hashable; previously unknown objects become new singleton sets.''
     def union(self, *objects):
         '''Find the sets containing the given objects and merge them all.'''
         roots = [self[x] for x in objects]
-        heaviest = max([(self.weights[r],r) for r in roots])[1]
+        heaviest = max([(self.weights[r], r) for r in roots])[1]
         for r in roots:
             if r != heaviest:
                 self.weights[heaviest] += self.weights[r]
                 self.parents[r] = heaviest
 
-def matching(G, initialMatching = {}):
+
+def matching(G, initialMatching={}):
     '''Find a maximum cardinality matching in a graph G.
 G is represented in modified GvR form: iter(G) lists its vertices;
 iter(G[v]) lists the neighbors of v; w in G[v] tests adjacency.
@@ -63,7 +65,6 @@ in Galil's 1986 Computing Surveys paper.'''
     for x in initialMatching:
         matching[x] = initialMatching[x]
 
-
     # Form greedy matching to avoid some iterations of augmentation
     for v in G.__iter__():
         if v not in matching:
@@ -76,7 +77,7 @@ in Galil's 1986 Computing Surveys paper.'''
     def augment():
         '''Search for a single augmenting path.
 Return value is true if the matching size was increased, false otherwise.'''
-    
+
         # Data structures for augmenting path search:
         #
         # leader: union-find structure; the leader of a blossom is one
@@ -103,17 +104,17 @@ Return value is true if the matching size was increased, false otherwise.'''
         T = {}
         unexplored = []
         base = {}
-        
+
         # Subroutines for augmenting path search.
         # Many of these are called only from one place, but are split out
         # as subroutines to improve modularization and readability.
-        
-        def blossom(v,w,a):
+
+        def blossom(v, w, a):
             '''Create a new blossom from edge v-w with common ancestor a.'''
-            
-            def findSide(v,w):
+
+            def findSide(v, w):
                 path = [leader[v]]
-                b = (v,w)   # new base for all T nodes found on the path
+                b = (v, w)   # new base for all T nodes found on the path
                 while path[-1] != a:
                     tnode = S[path[-1]]
                     path.append(tnode)
@@ -121,15 +122,16 @@ Return value is true if the matching size was increased, false otherwise.'''
                     unexplored.append(tnode)
                     path.append(leader[T[tnode]])
                 return path
-            
+
             a = leader[a]   # sanity check
-            path1,path2 = findSide(v,w), findSide(w,v)
+            path1, path2 = findSide(v, w), findSide(w, v)
             leader.union(*path1)
             leader.union(*path2)
-            S[leader[a]] = S[a] # update structure tree
+            S[leader[a]] = S[a]  # update structure tree
 
         topless = object()  # should be unequal to any graph vertex
-        def alternatingPath(start, goal = topless):
+
+        def alternatingPath(start, goal=topless):
             '''Return sequence of vertices on alternating path from start to goal.
 Goal must be a T node along the path from the start to the root of the structure tree.
 If goal is omitted, we find an alternating path to the structure tree root.'''
@@ -149,20 +151,20 @@ If goal is omitted, we find an alternating path to the structure tree root.'''
                 if tnode == goal:
                     return path     # finished recursive subpath
                 start = T[tnode]
-                
+
         def pairs(L):
             '''Utility to partition list into pairs of items.
 If list has odd length, the final pair is omitted silently.'''
             i = 0
             while i < len(L) - 1:
-                yield L[i],L[i+1]
+                yield L[i], L[i+1]
                 i += 2
-            
+
         def alternate(v):
             '''Make v unmatched by alternating the path to the root of its structure tree.'''
             path = alternatingPath(v)
             path.reverse()
-            for x,y in pairs(path):
+            for x, y in pairs(path):
                 matching[x] = y
                 matching[y] = x
 
@@ -173,19 +175,19 @@ Find the corresponding augmenting path and use it to augment the matching.'''
             alternate(w)
             matching[v] = w
             matching[w] = v
-            
-        def ss(v,w):
+
+        def ss(v, w):
             '''Handle detection of an S-S edge in augmenting path search.
 Like augment(), returns true iff the matching size was increased.'''
-    
+
             if leader[v] == leader[w]:
                 return False        # self-loop within blossom, ignore
-    
+
             # parallel search up two branches of structure tree
             # until we find a common ancestor of v and w
             path1, head1 = {}, v
             path2, head2 = {}, w
-    
+
             def step(path, head):
                 head = leader[head]
                 parent = leader[S[head]]
@@ -194,26 +196,26 @@ Like augment(), returns true iff the matching size was increased.'''
                 path[head] = parent
                 path[parent] = leader[T[parent]]
                 return path[parent]
-                
+
             while 1:
                 head1 = step(path1, head1)
                 head2 = step(path2, head2)
-                
+
                 if head1 == head2:
                     blossom(v, w, head1)
                     return False
-                
+
                 if leader[S[head1]] == head1 and leader[S[head2]] == head2:
                     addMatch(v, w)
                     return True
-                
+
                 if head1 in path2:
                     blossom(v, w, head1)
                     return False
-                
+
                 if head2 in path1:
                     blossom(v, w, head2)
-                    return False    
+                    return False
 
         # Start of main augmenting path search code.
 
@@ -229,7 +231,7 @@ Like augment(), returns true iff the matching size was increased.'''
 
             for w in G.neighbors(v):
                 if leader[w] in S:  # S-S edge: blossom or augmenting path
-                    if ss(v,w):
+                    if ss(v, w):
                         return True
 
                 elif w not in T:    # previously unexplored node, add as T-node
@@ -238,16 +240,17 @@ Like augment(), returns true iff the matching size was increased.'''
                     if leader[u] not in S:
                         S[u] = w    # and add its match as an S-node
                         unexplored.append(u)
-                        
+
         return False    # ran out of graph without finding an augmenting path
-                        
+
     # augment the matching until it is maximum
     while augment():
         pass
 
     return matching
 
-def compute_coffee_dates (Groups, number_dates):
+
+def compute_coffee_dates(Groups, number_dates):
     persons = []
     dates = []
     G = nx.Graph()
@@ -265,22 +268,35 @@ def compute_coffee_dates (Groups, number_dates):
         dates.append(Matching)
         for person in Matching:
             if G.has_edge(person, Matching[person]):
-                G.remove_edge(person, Matching[person])   
-        iter+=1
+                G.remove_edge(person, Matching[person])
+        iter += 1
+
+    for date in dates:
+        double_matches = []
+        for person in date.keys():
+            if person not in double_matches:
+                double_matches.append(date[person])
+
+        for match in double_matches:
+            del date[match]
+
     return dates
 
-Groups = []
-num_groups = 0
-while num_groups < 1000:
-    group = []
-    num_per_group = 0
-    while num_per_group < 4:
-        group.append(generate_name())
-        num_per_group += 1
-    Groups.append(group)
-    num_groups+=1
-start = time.perf_counter()
-dates = compute_coffee_dates(Groups, 2)
-duration = time.perf_counter() - start
-print(dates)
-print (duration)
+
+# Groups = []
+# num_groups = 0
+# while num_groups < 3:
+#     group = []
+#     num_per_group = 0
+#     while num_per_group < 2:
+#         group.append(generate_name())
+#         num_per_group += 1
+#     Groups.append(group)
+#     num_groups += 1
+
+# print(Groups)
+# start = time.perf_counter()
+# dates = compute_coffee_dates(Groups, 2)
+# duration = time.perf_counter() - start
+# print(dates)
+# print(duration)
