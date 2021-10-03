@@ -1,7 +1,7 @@
 from __future__ import generators
 import networkx as nx
-from names_generator import generate_name
-import time
+# from names_generator import generate_name
+# import time
 
 if 'True' not in globals():
     globals()['True'] = not None
