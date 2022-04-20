@@ -1,8 +1,10 @@
 {
-  "python.testing.promptToConfigure": false,
-  "python.testing.pytestEnabled": false,
+  "python.testing.pytestEnabled": true,
   "python.testing.unittestEnabled": false,
   "python.testing.nosetestsEnabled": false,
-  "python.pythonPath": "/home/jasper/anaconda3/envs/edmonds-coffee-date/bin/python",
-  "python.formatting.provider": "black"
+  "python.pythonPath": "/home/jasper/.virtualenvs/EdmondsCoffeeDate-RN3B7538/bin/python",
+  "python.formatting.provider": "black",
+  "python.testing.pytestArgs": [
+    "."
+  ]
 }
