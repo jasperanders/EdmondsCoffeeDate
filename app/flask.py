@@ -1,5 +1,5 @@
 from flask import Flask, request
-from app.coffedatematching import compute_coffee_dates
+from app.logic.coffedatematching import compute_coffee_dates
 
 app = Flask(__name__)
 version = "v1"

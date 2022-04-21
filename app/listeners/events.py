@@ -1,8 +1,9 @@
 # from app import mode_auto, matchings_amount
 from blocks.chat import hello
 from blocks.home import homeview
-from helper.helper import convert_matchings_to_string, match, cleanup
-from __init__ import matchings_amount, mode_auto
+from blocks.chat import auto_mode
+from helper.helper import matchings_from_string
+from __init__ import matchings_amount, mode_auto, cleanup
 
 
 # ============== General Message Events ============= #
@@ -16,31 +17,42 @@ def message(event, context, client, say):
         # channel_id = event.get("channel")
         text = event.get("text")
 
+        # If mode is not set there was no (meaningful) user interaction. In that case we send the hello block.
         if mode_auto.get(user_id) is None:
             say(blocks=hello)
 
-        elif not mode_auto.get(user_id) and matchings_amount.get(user_id) is None:
+        # If mode is manual but user has not specified the number of matchings we expect them to come next.
+        # so we will react here
+        elif (
+            mode_auto.get(user_id) is not None and matchings_amount.get(user_id) is None
+        ):
             matchings_amount[user_id] = int(text)
             say(
-                f"Ok I will create {matchings_amount.get(user_id)} sets of matches for you. Please provide your teams now."
+                f"Ok I will create {matchings_amount.get(user_id)} sets of matches for you."
             )
 
+            if mode_auto.get("user_id"):
+                say(blocks=auto_mode)
+            else:
+                say("Please provide your teams now.")
+
+        # If mode is manual and amount is set, we expect to get the groups next. Match them and return
+        # send the matches back to the user.
         elif not mode_auto.get(user_id) and matchings_amount.get(user_id) is not None:
             say(
-                f"{convert_matchings_to_string(match(groups_sting=text, matchings_amount=matchings_amount.get(user_id)))}\n Thats it. Thanks and have fun!"
+                f"{matchings_from_string(groups_sting=text, matchings_amount=matchings_amount.get(user_id))}\n Thats it. Thanks and have fun!"
             )
             cleanup(user_id)
 
     except Exception:
         cleanup(user_id)
         say(
-            """Oops, I think something went wrong. MoinPlease don't be angry. You can start over again by typing "start"."""
+            """Oops, I think something went wrong. Please don't be angry. You can start over again by typing "start"."""
         )
 
 
 # ============= Home Openend Event =========== #
-# When a use opens the apps homescreen, a greeting and a
-# call to action will be shown.
+# When a use opens the apps homescreen, a greeting and a call to action will be shown.
 # @app.event("app_home_opened")
 def update_home_tab(client, event, logger):
     try:

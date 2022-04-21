@@ -1,5 +1,4 @@
-from cgitb import text
-from helper.getChannels import getChannels
+from app.helper.slack_api_interaction import getChannels
 
 hello = [
     {
@@ -27,7 +26,7 @@ I can be used in automatic and manual mode.""",
             "type": "mrkdwn",
             "text": """You can also specify the teams in plaintext.  After you specified the number of dates you want me to generate I will do so and message you all the matches directly.
             
-If you choose manual mode, I will give you some additional foramtting information.
+If you choose manual mode, I will give you some additional formatting information.
             """,
         },
     },
@@ -83,43 +82,48 @@ Asterix & Cicero
     }
 ]
 
-matching = [
+auto_mode = [
+    {"type": "divider"},
     {
         "type": "section",
         "text": {
             "type": "mrkdwn",
-            "text": "Hey, I am Edmund. I am here to provide you with excellent coffee date matching.",
+            "text": "Ok, let's get started with automatic matching. Start by selecting the channels.",
+        },
+        "accessory": {
+            "action_id": "match_channels",
+            "type": "multi_channels_select",
+            "placeholder": {"type": "plain_text", "text": "Select channels"},
         },
     },
-    {"type": "divider"},
-    {
-        "type": "input",
-        "element": {
-            "type": "multi_static_select",
-            "placeholder": {
-                "type": "plain_text",
-                "text": "Select options",
-                "emoji": True,
-            },
-            "options": getChannels(),
-            "action_id": "multi_select_channel-action",
-        },
-        "label": {
-            "type": "plain_text",
-            "text": "Select teams you want to match.",
-            "emoji": True,
-        },
-    },
-    {
-        "type": "actions",
-        "elements": [
-            {
-                "type": "button",
-                "text": {"type": "plain_text", "text": "Match!", "emoji": True},
-                "value": "click_me_123",
-                "action_id": "matching_button",
-            }
-        ],
-    },
+    # {
+    #     "type": "input",
+    #     "element": {
+    #         "type": "multi_static_select",
+    #         "placeholder": {
+    #             "type": "plain_text",
+    #             "text": "Select options",
+    #             "emoji": True,
+    #         },
+    #         "options": getChannels(),
+    #         "action_id": "multi_select_channel-action",
+    #     },
+    #     "label": {
+    #         "type": "plain_text",
+    #         "text": "Select teams you want to match.",
+    #         "emoji": True,
+    #     },
+    # },
+    # {
+    #     "type": "actions",
+    #     "elements": [
+    #         {
+    #             "type": "button",
+    #             "text": {"type": "plain_text", "text": "Match!", "emoji": True},
+    #             "value": "match",
+    #             "action_id": "match_channels",
+    #         }
+    #     ],
+    # },
     {"type": "divider"},
 ]

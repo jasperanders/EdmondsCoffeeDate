@@ -5,6 +5,6 @@
   "python.pythonPath": "/home/jasper/.virtualenvs/EdmondsCoffeeDate-RN3B7538/bin/python",
   "python.formatting.provider": "black",
   "python.testing.pytestArgs": [
-    "."
+    "app"
   ]
 }

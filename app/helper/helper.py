@@ -1,5 +1,4 @@
-from __init__ import mode_auto, matchings_amount
-from coffedatematching import compute_coffee_dates
+from logic.coffedatematching import compute_coffee_dates
 
 
 def convert_string_to_nested_list(string_input):
@@ -27,20 +26,43 @@ def convert_matchings_to_string(matchings):
     return result
 
 
-def match(
+def matchings_from_string(
     groups_sting: str,
     matchings_amount: int = 3,
 ):
     """
-    Match a
+    Match a group sting.
     """
     print(groups_sting)
     print("----")
-    return compute_coffee_dates(
-        convert_string_to_nested_list(groups_sting), matchings_amount
+    return convert_matchings_to_string(
+        compute_coffee_dates(
+            convert_string_to_nested_list(groups_sting), matchings_amount
+        )
     )
 
 
-def cleanup(user_id):
-    mode_auto[user_id] = None
-    matchings_amount[user_id] = None
+def generate_per_user_matches(matchings):
+    """
+    in: [
+        {"Jasper Anders": "Pert", "Bob": "Hannes von Boetticher"},
+        {"Jasper Anders": "Bob", "Pert": "Hannes von Boetticher"},
+    ]
+
+    out: {
+        "Jasper Anders": ["Pert", "Bob"],
+        "Pert": ["Jasper Anders", "Hannes von Boetticher"],
+        "Bob": ["Hannes von Boetticher", "Jasper Anders"],
+        "Hannes von Boetticher": ["Bob", "Pert"]
+    }
+    """
+
+    result = {}
+
+    for matching in matchings:
+        for date in matching:
+            result[date] = [] if result.get(date) is None else None
+            result[matching[date]] = [] if result.get(date) is None else None
+
+            result[date].append(matching[date])
+            result[matching[date]].append(date)

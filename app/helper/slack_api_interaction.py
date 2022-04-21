@@ -20,10 +20,46 @@ def fetch_conversations():
     try:
         # Call the conversations.list method using the WebClient
         result = client.conversations_list()
-        save_conversations(result["channels"])
+        return result
+        # save_conversations(result["channels"])
 
     except SlackApiError as e:
         logger.error("Error fetching conversations: {}".format(e))
+
+
+def groups_from_channel_ids(channel_ids):
+    """
+    Take channel ids, get all users in a channel and append them to nested list. Return this nested list.
+    """
+    groups = []
+
+    try:
+        for id in channel_ids:
+            groups.append(client.conversations_members(id).get("members"))
+
+        return groups
+
+    except SlackApiError:
+        logger.error("Error fetching users from channels.")
+
+
+def send_matches_to_user(user_matches: list, user_id):
+    """
+    user_matches should be a list of matches. They are wrapped in some text and
+    send to the user specified.
+    """
+    matches_names = []
+    # generate block from user_matches
+    for match in user_matches:
+        matches_names.append(get_full_name(match))
+
+    client.chat_postMessage(blocks={}, channel=user_id)
+
+
+# ==================================== #
+# ============ deprecated ============ #
+# ==================================== #
+# This is no longer used as there is a specific channel select block
 
 
 # Put conversations into the JavaScript object

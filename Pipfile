@@ -16,6 +16,7 @@ black = "*"
 [dev-packages]
 flake8 = "*"
 black = "*"
+debugpy = "*"
 
 [requires]
 python_version = "3.9"

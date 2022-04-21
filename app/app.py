@@ -6,9 +6,10 @@ from dotenv import load_dotenv
 
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
-from listeners.actions import set_auto_mode, set_manual_mode
 
-from listeners.events import message, update_home_tab
+from listeners.actions import set_auto_mode, set_manual_mode, start_automatic_matching
+
+from listeners.events import update_home_tab, message
 from listeners.messages import panic
 
 # take environment variables from .env
@@ -38,11 +39,11 @@ app.event("app_home_opened")(update_home_tab)
 # action listeners
 app.action("manual_mode_button")(set_manual_mode)
 app.action("auto_mode_button")(set_auto_mode)
+app.action("match_channels")(start_automatic_matching)
 
 # message listeners
 app.message("PANIC")(panic)
 
 # Start your app
 if __name__ == "__main__":
-    # init()
     SocketModeHandler(app, os.getenv("SLACK_APP_TOKEN")).start()

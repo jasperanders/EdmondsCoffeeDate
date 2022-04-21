@@ -1,4 +1,4 @@
-from helper.helper import cleanup
+from __init__ import cleanup
 
 
 # ============= Panic ===================== #
