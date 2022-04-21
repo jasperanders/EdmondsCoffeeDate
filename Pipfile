@@ -11,6 +11,7 @@ slack-bolt = ">=1.6.1"
 certifi = "*"
 Flask = "*"
 python-dotenv = "*"
+black = "*"
 
 [dev-packages]
 flake8 = "*"

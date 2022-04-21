@@ -14,16 +14,13 @@ Navigate to `app/` and start the bot with
 python -m app
 ```
 
-also forward local dev port using [ngrok](https://ngrok.com). 
-
-```
-ngrok http 3000
-```
-
-For development you need to update the [Slack Event Subscription Api endpoint](https://api.slack.com/apps/A02GG7SDX35/event-subscriptions?). Use the url that ngrok provides and append `slack/events` to this Api. 
+This bot uses the bolt socket mode, you don't need to specify any endpoints in your app. Only make sure you have valid Slack-Tokens.
 
 
-!! The bot part of this application doesn't use flask. Still we provide a flask-endpoint that can be used to use the general matching. !!
+### Using Flask
+
+!! The bot part of this application doesn't use flask. 
+Still, we provide a flask-endpoint that can be used to use the general matching. !!
 
 Start the flask server with
 
