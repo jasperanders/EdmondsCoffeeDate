@@ -61,8 +61,22 @@ def generate_per_user_matches(matchings):
 
     for matching in matchings:
         for date in matching:
-            result[date] = [] if result.get(date) is None else None
-            result[matching[date]] = [] if result.get(date) is None else None
+            if result.get(date) is None:
+                result[date] = []
+
+            if result.get(matching[date]) is None:
+                result[matching[date]] = []
 
             result[date].append(matching[date])
             result[matching[date]].append(date)
+
+    return result
+
+
+def prettify_user_matches(matches):
+    result = ""
+
+    for i, match in enumerate(matches):
+        result += f"{i+1}. {match}\n"
+
+    return result

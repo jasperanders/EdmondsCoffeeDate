@@ -1,5 +1,3 @@
-from app.helper.slack_api_interaction import getChannels
-
 hello = [
     {
         "type": "section",
@@ -72,7 +70,7 @@ Asterix & Caesar
 Obelix & Cicero
 
 2.
-Obleix & Caesar
+Obelix & Caesar
 Asterix & Cicero
 ```
 
@@ -83,12 +81,11 @@ Asterix & Cicero
 ]
 
 auto_mode = [
-    {"type": "divider"},
     {
         "type": "section",
         "text": {
             "type": "mrkdwn",
-            "text": "Ok, let's get started with automatic matching. Start by selecting the channels.",
+            "text": "Let's continue by selecting the channels you want to match.",
         },
         "accessory": {
             "action_id": "match_channels",
@@ -96,34 +93,11 @@ auto_mode = [
             "placeholder": {"type": "plain_text", "text": "Select channels"},
         },
     },
-    # {
-    #     "type": "input",
-    #     "element": {
-    #         "type": "multi_static_select",
-    #         "placeholder": {
-    #             "type": "plain_text",
-    #             "text": "Select options",
-    #             "emoji": True,
-    #         },
-    #         "options": getChannels(),
-    #         "action_id": "multi_select_channel-action",
-    #     },
-    #     "label": {
-    #         "type": "plain_text",
-    #         "text": "Select teams you want to match.",
-    #         "emoji": True,
-    #     },
-    # },
-    # {
-    #     "type": "actions",
-    #     "elements": [
-    #         {
-    #             "type": "button",
-    #             "text": {"type": "plain_text", "text": "Match!", "emoji": True},
-    #             "value": "match",
-    #             "action_id": "match_channels",
-    #         }
-    #     ],
-    # },
-    {"type": "divider"},
+    {
+        "type": "section",
+        "text": {
+            "type": "mrkdwn",
+            "text": "If you are part of one of the channels you might also get a message.",
+        },
+    },
 ]
