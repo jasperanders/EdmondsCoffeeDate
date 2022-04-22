@@ -31,7 +31,7 @@ def message(event, context, client, say):
                 f"Ok I will create {matchings_amount.get(user_id)} sets of matches for you."
             )
 
-            if mode_auto.get("user_id"):
+            if mode_auto.get(user_id):
                 say(blocks=auto_mode)
             else:
                 say("Please provide your teams now.")

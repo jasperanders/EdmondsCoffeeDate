@@ -1,6 +1,10 @@
-from app.helper.slack_api_interaction import groups_from_channel_ids, send_matches_to_user
-from app.logic.coffedatematching import compute_coffee_dates
-from blocks.chat import manual_mode_format_info, auto_mode
+from helper.helper import generate_per_user_matches
+from helper.slack_api_interaction import (
+    groups_from_channel_ids,
+    send_matches_to_user,
+)
+from logic.coffedatematching import compute_coffee_dates
+from blocks.chat import manual_mode_format_info
 from __init__ import mode_auto, matchings_amount
 
 
@@ -34,18 +38,16 @@ def start_automatic_matching(ack, body, payload, context, say, logger):
     user_id = context.get("user_id")
 
     # check if nothing is selected and prompt to select some channels
-    say(
-        "It seems like you didn't select any channel. Please do that before you try to match again."
-    )
-
     selected_channels = payload.get("selected_channels")
 
     groups = groups_from_channel_ids(selected_channels)
     matches = compute_coffee_dates(groups, matchings_amount.get(user_id))
+    logger.debug(f"Matches are: {matches}")
     user_matches = generate_per_user_matches(matches)
+    logger.debug(f"Matches are: {user_matches}")
 
     for user in user_matches:
-        send_matches_to_user(user, user_matches[user])
+        send_matches_to_user(user_id=user, user_matches=user_matches[user])
 
     ack()
     say("Done, I send all the messages.")

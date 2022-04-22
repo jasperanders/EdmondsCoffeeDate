@@ -2,6 +2,7 @@ from helper import (
     convert_string_to_nested_list,
     convert_matchings_to_string,
     generate_per_user_matches,
+    prettify_user_matches,
 )
 
 
@@ -29,14 +30,20 @@ def test_convert_matchings_to_string():
 
 
 def test_generate_per_user_matches():
-    matchings = [
+    matches = [
         {"Jasper Anders": "Pert", "Bob": "Hannes von Boetticher"},
         {"Jasper Anders": "Bob", "Pert": "Hannes von Boetticher"},
     ]
 
-    assert generate_per_user_matches(matchings) == {
+    assert generate_per_user_matches(matches) == {
         "Jasper Anders": ["Pert", "Bob"],
         "Pert": ["Jasper Anders", "Hannes von Boetticher"],
         "Bob": ["Hannes von Boetticher", "Jasper Anders"],
         "Hannes von Boetticher": ["Bob", "Pert"],
     }
+
+
+def test_prettify_user_matches():
+    matches = ["Pert", "Bob"]
+
+    assert prettify_user_matches(matches) == "1. Pert\n2. Bob\n"

@@ -17,7 +17,7 @@ load_dotenv()
 
 # logger in a global context
 # requires importing logging
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 
 
 ssl_context = ssl_lib.create_default_context(cafile=certifi.where())

@@ -1,4 +1,4 @@
-# Edmonds Coffee Date Matcher
+# Edmonds Coffee Date
 
 A matching algorithm for groups of persons, giving the specified number of pairings between persons of different groups, with no meeting repeating.
 
@@ -66,3 +66,4 @@ the answer should look something like this:
 	]
 }
 ```
+

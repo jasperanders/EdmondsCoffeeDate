@@ -3,7 +3,7 @@ homeblocks = [
         "type": "section",
         "text": {
             "type": "mrkdwn",
-            "text": """Hey, I am Edmund. I am here to provide you with excellent coffee date matching.
+            "text": """Hey, I am Edmond. I am here to provide you with excellent coffee date matching.
                     Navigate to the message tab to get started.
                     """,
         },
