@@ -1,0 +1,25 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+gunicorn = "*"
+networkx = "*"
+slack-sdk = ">=3.0"
+slack-bolt = ">=1.6.1"
+certifi = "*"
+Flask = "*"
+python-dotenv = "*"
+black = "*"
+
+[dev-packages]
+flake8 = "*"
+black = "*"
+debugpy = "*"
+
+[requires]
+python_version = "3.9"
+
+[pipenv]
+allow_prereleases = true
