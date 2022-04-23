@@ -1,11 +1,11 @@
-from helper.helper import generate_per_user_matches
-from helper.slack_api_interaction import (
+from app.helper.helper import generate_per_user_matches
+from app.helper.slack_api_interaction import (
     groups_from_channel_ids,
     send_matches_to_user,
 )
-from logic.coffedatematching import compute_coffee_dates
-from blocks.chat import manual_mode_format_info
-from __init__ import mode_auto, matchings_amount
+from app.logic.coffedatematching import compute_coffee_dates
+from app.blocks.chat import manual_mode_format_info
+from app.__init__ import mode_auto, matchings_amount
 
 
 def set_manual_mode(ack, context, say, logger):

@@ -1,13 +1,12 @@
 import logging
 import os
-import json
 
 
 # Import WebClient from Python SDK (github.com/slackapi/python-slack-sdk)
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
 
-from helper.helper import prettify_user_matches
+from app.helper.helper import prettify_user_matches
 
 # WebClient instantiates a client that can call API methods
 # When using Bolt, you can use either `app.client` or the `client` passed to listeners.
@@ -71,12 +70,13 @@ def send_matches_to_user(user_matches: list, user_id):
     # generate block from user_matches
     for match in user_matches:
         matches_names.append(fetch_full_name(match))
-
+    client.chat_postMessage(blocks=[{"type": "divider"}], channel=user_id)
     client.chat_postMessage(
         text="Hey, I am Edmond. You are part of the coffee date matching, a nice way to get to know your colleagues outside your team. Have a coffee and get to know them. Your matches are:",
         channel=user_id,
     )
     client.chat_postMessage(text=prettify_user_matches(matches_names), channel=user_id)
+    client.chat_postMessage(blocks=[{"type": "divider"}], channel=user_id)
 
 
 # ==================================== #
@@ -113,7 +113,3 @@ def getChannels():
         )
 
     return channels_block
-
-
-with open("./helper/apidata/sample.json", "w") as outfile:
-    json.dump(conversations_store, outfile)

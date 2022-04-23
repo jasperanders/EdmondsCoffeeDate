@@ -1,4 +1,4 @@
-from helper import (
+from app.helper import (
     convert_string_to_nested_list,
     convert_matchings_to_string,
     generate_per_user_matches,

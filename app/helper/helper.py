@@ -1,4 +1,4 @@
-from logic.coffedatematching import compute_coffee_dates
+from app.logic.coffedatematching import compute_coffee_dates
 
 
 def convert_string_to_nested_list(string_input):
@@ -21,7 +21,7 @@ def convert_matchings_to_string(matchings):
     for i, match in enumerate(matchings):
         result += f"{i+1}.\n"
         for date in match.keys():
-            result += f"@{date} & @{match[date]}\n"
+            result += f"{date} & {match[date]}\n"
         result += "\n"
     return result
 

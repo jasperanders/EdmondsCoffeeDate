@@ -4,14 +4,12 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-gunicorn = "*"
 networkx = "*"
 slack-sdk = ">=3.0"
 slack-bolt = ">=1.6.1"
 certifi = "*"
-Flask = "*"
 python-dotenv = "*"
-black = "*"
+python-lambda = "*"
 
 [dev-packages]
 flake8 = "*"

@@ -7,10 +7,14 @@ from dotenv import load_dotenv
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 
-from listeners.actions import set_auto_mode, set_manual_mode, start_automatic_matching
+from app.listeners.actions import (
+    set_auto_mode,
+    set_manual_mode,
+    start_automatic_matching,
+)
 
-from listeners.events import update_home_tab, message
-from listeners.messages import panic
+from app.listeners.events import update_home_tab, message
+from app.listeners.messages import panic
 
 # take environment variables from .env
 load_dotenv()
@@ -22,12 +26,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 ssl_context = ssl_lib.create_default_context(cafile=certifi.where())
 
-# app = App(
-#     token=os.environ.get("SLACK_BOT_TOKEN"),
-#     signing_secret=os.environ.get("SLACK_SIGNING_SECRET"),
-# )
-
-app = App(token=os.getenv("SLACK_BOT_TOKEN"))
+app = App(process_before_response=True, token=os.getenv("SLACK_BOT_TOKEN"))
 
 
 # ============ register listeners =============== #

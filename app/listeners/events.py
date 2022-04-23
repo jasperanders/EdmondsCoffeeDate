@@ -1,9 +1,9 @@
 # from app import mode_auto, matchings_amount
-from blocks.chat import hello
-from blocks.home import homeview
-from blocks.chat import auto_mode
-from helper.helper import matchings_from_string
-from __init__ import matchings_amount, mode_auto, cleanup
+from app.blocks.chat import hello
+from app.blocks.home import homeview
+from app.blocks.chat import auto_mode
+from app.helper.helper import matchings_from_string
+from app.__init__ import matchings_amount, mode_auto, cleanup
 
 
 # ============== General Message Events ============= #
@@ -12,8 +12,9 @@ from __init__ import matchings_amount, mode_auto, cleanup
 # @app.event("message")
 # @app.event("im_open")
 def message(event, context, client, say):
+
+    user_id = context.get("user_id")
     try:
-        user_id = context["user_id"]
         # channel_id = event.get("channel")
         text = event.get("text")
 
@@ -39,6 +40,7 @@ def message(event, context, client, say):
         # If mode is manual and amount is set, we expect to get the groups next. Match them and return
         # send the matches back to the user.
         elif not mode_auto.get(user_id) and matchings_amount.get(user_id) is not None:
+            say("I am done matching")
             say(
                 f"{matchings_from_string(groups_sting=text, matchings_amount=matchings_amount.get(user_id))}\n Thats it. Thanks and have fun!"
             )

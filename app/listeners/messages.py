@@ -1,4 +1,4 @@
-from __init__ import cleanup
+from app.__init__ import cleanup
 
 
 # ============= Panic ===================== #
