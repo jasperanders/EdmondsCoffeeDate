@@ -296,7 +296,7 @@ def handler(event, context):
     return {
         "statusCode": 200,
         "headers": {"ContentType": "application/json"},
-        "body": {"dates": compute_coffee_dates(groups, number_dates)}number_datesnumber_dates,
+        "body": {"dates": compute_coffee_dates(groups, number_dates)},
     }
 
 

@@ -32,8 +32,10 @@ def fwd_to_lambda():
     req = request.json
     forward = {"body": json.dumps(req)}
 
+    print(forward)
     resp = requests.post(
         "http://localhost:9000/2015-03-31/functions/function/invocations", json=forward
     ).json()
+    print(resp)
     return resp
 

@@ -9,7 +9,7 @@ export const action = async ({ request }: any) => {
 
   const groups = {
     groups: createNestedArrayFromString(groupString),
-    number_dates: formData.get("datesNumber")
+    number_dates: Number(formData.get("datesNumber"))
   }
 
   try {
